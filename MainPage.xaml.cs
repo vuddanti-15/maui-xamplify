@@ -8,7 +8,6 @@
         {
             InitializeComponent();
             ShowSplashScreen();
-            MyWebView.Source = new Uri("https://xamplify.com/");
         }
 
         private async void ShowSplashScreen()
@@ -23,7 +22,7 @@
             // Initialize the WebView
             MyWebView = new WebView
             {
-                Source = new Uri("https://xamplify.com/")
+                Source = new Uri("https://xamplify.io/")
             };
 
             // Set the ContentView to the WebView
