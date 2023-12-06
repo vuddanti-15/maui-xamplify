@@ -3,14 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="xamplify.MainPage">
 
-    <StackLayout>
-        <Grid>
-            <Button Text="Close Button" Clicked="OnCloseButtonClick" VerticalOptions="Center"/>
-        </Grid>
+    
+        <Grid x:Name="Demo">
+           
+            <WebView x:Name="MyWebView"  VerticalOptions="FillAndExpand" />
+        <Image  Source="closebutton.png"    WidthRequest="30" HeightRequest="30" 
+                VerticalOptions="Start" HorizontalOptions="Center">
+            <Image.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnScreenEdgeTapped" />
+            </Image.GestureRecognizers>
+        </Image>
+    </Grid>
 
        
-        <WebView x:Name="MyWebView" VerticalOptions="FillAndExpand" />
         
-    </StackLayout>
+  
 
 </ContentPage>
