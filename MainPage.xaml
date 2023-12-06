@@ -4,11 +4,12 @@
              x:Class="xamplify.MainPage">
 
     <StackLayout>
-        <!-- Splash screen image -->
-        <Image Source="splashwindows.png " Aspect="AspectFill" />
-        <WebView
-            x:Name="MyWebView"
-            VerticalOptions="FillAndExpand" />
+        <Grid>
+            <Button Text="Close Button" Clicked="OnCloseButtonClick" VerticalOptions="Center"/>
+        </Grid>
+
+       
+        <WebView x:Name="MyWebView" VerticalOptions="FillAndExpand" />
         
     </StackLayout>
 
