@@ -54,9 +54,29 @@ namespace xamplify
 
                 SetWindowLayout();
             }
-        }
+            public override void OnBackPressed()
+            {
+            // Show confirmation dialog before closing the app
+            ShowCloseConfirmation();
+            }
+        private void ShowCloseConfirmation()
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.SetTitle("Alert");
+            builder.SetMessage("Are you sure you want to close the app?");
+            builder.SetPositiveButton("Yes", (sender, args) =>
+            {
+                // Close the app
+                FinishAffinity();
+            });
+            builder.SetNegativeButton("No", (sender, args) => { });
 
+            AlertDialog dialog = builder.Create();
+            dialog.Show();
+        }
     }
+}
+
 
 
 
