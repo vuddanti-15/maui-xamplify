@@ -10,26 +10,31 @@ namespace xamplify
         {
             InitializeComponent();
             ShowSplashScreen();
+
+            // Add tap gesture to the entire content area
+            var tapGestureRecognizer = new TapGestureRecognizer();
+            tapGestureRecognizer.Tapped += OnScreenEdgeTapped;
+            Demo.GestureRecognizers.Add(tapGestureRecognizer); // Add to your specific layout or view
         }
 
         private async void ShowSplashScreen()
         {
             // Check if the current platform is Windows
-            if (Device.RuntimePlatform == Device.WinUI)
+            if (Microsoft.Maui.Devices.DeviceInfo.Platform == Microsoft.Maui.Devices.DevicePlatform.WinUI)
             {
                 // Load the splash screen for Windows
                 Content = new Image { Source = "splashwindows.png", Aspect = Aspect.AspectFill };
                 await Task.Delay(5000); // Adjust the duration as needed
             }
 
-            MyWebView.Source = new Uri("https://xamplify.io/");
+            MyWebView.Source = new Uri("https://xamplify.io");
             Content = Demo;
         }
 
         private void OnScreenEdgeTapped(object sender, EventArgs e)
         {
             // Handle the tap event for the screen edge
-            // This will be triggered when the user taps anywhere on the button or the screen edge
+            // This will be triggered when the user taps anywhere on the layout or view
             HandleLeftEdgeTap();
         }
 
@@ -47,7 +52,8 @@ namespace xamplify
 
             if (shouldClose)
             {
-                (Application.Current as App)?.Quit();
+                // Replace this with the actual way to close the app on your platform
+                 (Application.Current as App)?.Quit(); 
             }
         }
     }
