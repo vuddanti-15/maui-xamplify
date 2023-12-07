@@ -30,6 +30,7 @@
 
             // Add Closeimage to your layout
             Demo.Children.Add(Closeimage);
+
         }
 
         private async void ShowSplashScreen()
@@ -44,20 +45,33 @@
 
             MyWebView.Source = new Uri("https://xamplify.io");
             Content = Demo;
+            Closeimage.IsVisible = false;
         }
 
         private void OnScreenEdgeTapped(object sender, EventArgs e)
         {
-            // Handle the tap event for the screen edge
-            // This will be triggered when the user taps anywhere on the layout or view
-            Closeimage.IsVisible = true;
+            var tappedEventArgs = e as TappedEventArgs;
+
+            if (tappedEventArgs != null)
+            {
+                // Get the Y coordinate of the tap
+                Point? windowPosition = tappedEventArgs.GetPosition(null);
+                double tapY = windowPosition?.Y ?? 0;
+
+                // Check if the tap is near the top edge (adjust the threshold as needed)
+                if (tapY < 30)
+                {
+                    // Toggle the visibility of the Closeimage
+                    Closeimage.IsVisible = !Closeimage.IsVisible;
+                }
+            }
         }
 
         private async void OnCloseImageTapped(object sender, EventArgs e)
         {
-            // Handle the tap event for the Closeimage
-            // For example, call the method to close the application
+            
             await OnCloseAppClicked();
+
         }
 
         private async Task OnCloseAppClicked()
