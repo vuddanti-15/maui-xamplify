@@ -1,8 +1,12 @@
-﻿namespace xamplify
+﻿using Microsoft.Maui.Controls;
+using System;
+using System.Threading.Tasks;
+
+namespace xamplify
 {
     public partial class MainPage : ContentPage
     {
-        private Image Closeimage;  
+        private Image CloseImage;
 
         public MainPage()
         {
@@ -14,8 +18,9 @@
             tapGestureRecognizer.Tapped += OnScreenEdgeTapped;
             Demo.GestureRecognizers.Add(tapGestureRecognizer); // Add to your specific layout or view
 
-            // Create Closeimage and add tap gesture
-            Closeimage = new Image
+#if WINDOWS
+            // Create CloseImage and add tap gesture only for Windows
+            CloseImage = new Image
             {
                 Source = "closeimage.png",
                 WidthRequest = 30,
@@ -26,11 +31,11 @@
 
             var closeImageTapGestureRecognizer = new TapGestureRecognizer();
             closeImageTapGestureRecognizer.Tapped += OnCloseImageTapped;
-            Closeimage.GestureRecognizers.Add(closeImageTapGestureRecognizer);
+            CloseImage.GestureRecognizers.Add(closeImageTapGestureRecognizer);
 
-            // Add Closeimage to your layout
-            Demo.Children.Add(Closeimage);
-
+            // Add CloseImage to your layout
+            Demo.Children.Add(CloseImage);
+#endif
         }
 
         private async void ShowSplashScreen()
@@ -45,14 +50,20 @@
 
             MyWebView.Source = new Uri("https://xamplify.io");
             Content = Demo;
-            Closeimage.IsVisible = false;
+
+#if WINDOWS
+            // Add null check for CloseImage to avoid potential NullReferenceException
+            if (CloseImage != null)
+            {
+                CloseImage.IsVisible = false;
+            }
+#endif
         }
 
         private void OnScreenEdgeTapped(object sender, EventArgs e)
         {
-            var tappedEventArgs = e as TappedEventArgs;
-
-            if (tappedEventArgs != null)
+            // Ensure the correct event args type and handle null reference
+            if (e is TappedEventArgs tappedEventArgs)
             {
                 // Get the Y coordinate of the tap
                 Point? windowPosition = tappedEventArgs.GetPosition(null);
@@ -61,17 +72,21 @@
                 // Check if the tap is near the top edge (adjust the threshold as needed)
                 if (tapY < 30)
                 {
-                    // Toggle the visibility of the Closeimage
-                    Closeimage.IsVisible = !Closeimage.IsVisible;
+#if WINDOWS
+                    // Add null check for CloseImage to avoid potential NullReferenceException
+                    if (CloseImage != null)
+                    {
+                        // Toggle the visibility of the CloseImage
+                        CloseImage.IsVisible = !CloseImage.IsVisible;
+                    }
+#endif
                 }
             }
         }
 
         private async void OnCloseImageTapped(object sender, EventArgs e)
         {
-            
             await OnCloseAppClicked();
-
         }
 
         private async Task OnCloseAppClicked()
@@ -86,7 +101,13 @@
             }
             else
             {
-                Closeimage.IsVisible = false;
+#if WINDOWS
+                // Add null check for CloseImage to avoid potential NullReferenceException
+                if (CloseImage != null)
+                {
+                    CloseImage.IsVisible = false;
+                }
+#endif
             }
         }
     }
