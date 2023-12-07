@@ -7,12 +7,12 @@
         <Grid x:Name="Demo">
            
             <WebView x:Name="MyWebView"  VerticalOptions="FillAndExpand" />
-        <!--<Image  Source="closebutton.png"    WidthRequest="30" HeightRequest="30" 
-                VerticalOptions="Start" HorizontalOptions="Center">
+        <Image   Source="closeimage.png"    WidthRequest="30" HeightRequest="30" 
+                VerticalOptions="Start" HorizontalOptions="Center"   IsVisible="false"   >
             <Image.GestureRecognizers>
                 <TapGestureRecognizer Tapped="OnScreenEdgeTapped" />
             </Image.GestureRecognizers>
-        </Image>-->
+        </Image>
     </Grid>
 
        

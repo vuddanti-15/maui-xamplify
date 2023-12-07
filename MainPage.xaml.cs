@@ -1,11 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.Maui.Controls;
-
-namespace xamplify
+﻿namespace xamplify
 {
     public partial class MainPage : ContentPage
     {
+        private Image Closeimage;  
+
         public MainPage()
         {
             InitializeComponent();
@@ -15,6 +13,23 @@ namespace xamplify
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += OnScreenEdgeTapped;
             Demo.GestureRecognizers.Add(tapGestureRecognizer); // Add to your specific layout or view
+
+            // Create Closeimage and add tap gesture
+            Closeimage = new Image
+            {
+                Source = "closeimage.png",
+                WidthRequest = 30,
+                HeightRequest = 30,
+                VerticalOptions = LayoutOptions.Start,
+                HorizontalOptions = LayoutOptions.Center
+            };
+
+            var closeImageTapGestureRecognizer = new TapGestureRecognizer();
+            closeImageTapGestureRecognizer.Tapped += OnCloseImageTapped;
+            Closeimage.GestureRecognizers.Add(closeImageTapGestureRecognizer);
+
+            // Add Closeimage to your layout
+            Demo.Children.Add(Closeimage);
         }
 
         private async void ShowSplashScreen()
@@ -35,17 +50,17 @@ namespace xamplify
         {
             // Handle the tap event for the screen edge
             // This will be triggered when the user taps anywhere on the layout or view
-            HandleLeftEdgeTap();
+            Closeimage.IsVisible = true;
         }
 
-        private void HandleLeftEdgeTap()
+        private async void OnCloseImageTapped(object sender, EventArgs e)
         {
-            // Your logic for handling the tap near the left edge
-            // For example, navigate to a new page, open a menu, etc.
-            OnCloseAppClicked();
+            // Handle the tap event for the Closeimage
+            // For example, call the method to close the application
+            await OnCloseAppClicked();
         }
 
-        private async void OnCloseAppClicked()
+        private async Task OnCloseAppClicked()
         {
             // Your logic for closing the application
             bool shouldClose = await DisplayAlert("Confirm", "Are you sure you want to close the application?", "Yes", "No");
@@ -53,7 +68,11 @@ namespace xamplify
             if (shouldClose)
             {
                 // Replace this with the actual way to close the app on your platform
-                 (Application.Current as App)?.Quit(); 
+                (Application.Current as App)?.Quit();
+            }
+            else
+            {
+                Closeimage.IsVisible = false;
             }
         }
     }

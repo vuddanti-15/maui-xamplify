@@ -55,7 +55,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\Images\closebutton.png" />
+	  <None Remove="Resources\Images\closeimage.png" />
 	  <None Remove="Resources\Splash\splashwindows.png" />
 	</ItemGroup>
 
