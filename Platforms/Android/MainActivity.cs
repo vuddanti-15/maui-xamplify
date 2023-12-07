@@ -4,79 +4,53 @@ using Android.OS;
 using Android.Views;
 
 namespace xamplify
+{
+    [Activity(Theme = "@style/Maui.SplashTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
+    public class MainActivity : MauiAppCompatActivity
     {
-        [Activity(Theme = "@style/Maui.SplashTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
-        public class MainActivity : MauiAppCompatActivity
+        private void SetWindowLayout()
         {
-            private void SetWindowLayout()
+            if (Window != null)
             {
-                if (Window != null)
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.R)
                 {
-                    if (Build.VERSION.SdkInt >= BuildVersionCodes.R)
+                    IWindowInsetsController wicController = Window.InsetsController;
+
+                    Window.SetDecorFitsSystemWindows(false);
+                    Window.SetFlags(WindowManagerFlags.Fullscreen, WindowManagerFlags.Fullscreen);
+
+                    if (wicController != null)
                     {
-#pragma warning disable CA1416
-
-                        IWindowInsetsController wicController = Window.InsetsController;
-
-
-                        Window.SetDecorFitsSystemWindows(false);
-                        Window.SetFlags(WindowManagerFlags.Fullscreen, WindowManagerFlags.Fullscreen);
-
-                        if (wicController != null)
-                        {
-                            wicController.Hide(WindowInsets.Type.Ime());
-                            wicController.Hide(WindowInsets.Type.NavigationBars());
-                        }
-#pragma warning restore CA1416
-                    }
-                    else
-                    {
-#pragma warning disable CS0618
-
-                        Window.SetFlags(WindowManagerFlags.Fullscreen, WindowManagerFlags.Fullscreen);
-
-                        Window.DecorView.SystemUiVisibility = (StatusBarVisibility)(SystemUiFlags.Fullscreen |
-                                                                                     SystemUiFlags.HideNavigation |
-                                                                                     SystemUiFlags.Immersive |
-                                                                                     SystemUiFlags.ImmersiveSticky |
-                                                                                     SystemUiFlags.LayoutHideNavigation |
-                                                                                     SystemUiFlags.LayoutStable |
-                                                                                     SystemUiFlags.LowProfile);
-#pragma warning restore CS0618
+                        wicController.Hide(WindowInsets.Type.Ime());
+                        wicController.Hide(WindowInsets.Type.NavigationBars());
                     }
                 }
-            }
+                else
+                {
+                    Window.SetFlags(WindowManagerFlags.Fullscreen, WindowManagerFlags.Fullscreen);
 
-            protected override void OnCreate(
-                Bundle bSavedInstanceState)
-            {
-                base.OnCreate(bSavedInstanceState);
+                    Window.DecorView.SystemUiVisibility = (StatusBarVisibility)(SystemUiFlags.Fullscreen |
+                                                                                 SystemUiFlags.HideNavigation |
+                                                                                 SystemUiFlags.Immersive |
+                                                                                 SystemUiFlags.ImmersiveSticky |
+                                                                                 SystemUiFlags.LayoutHideNavigation |
+                                                                                 SystemUiFlags.LayoutStable |
+                                                                                 SystemUiFlags.LowProfile);
+                }
+            }
+        }
 
-                SetWindowLayout();
-            }
-            public override void OnBackPressed()
-            {
-            // Show confirmation dialog before closing the app
-            ShowCloseConfirmation();
-            }
-        private void ShowCloseConfirmation()
+        protected override void OnCreate(Bundle bSavedInstanceState)
         {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.SetTitle("Alert");
-            builder.SetMessage("Are you sure you want to close the app?");
-            builder.SetPositiveButton("Yes", (sender, args) =>
-            {
-                // Close the app
-                FinishAffinity();
-            });
-            builder.SetNegativeButton("No", (sender, args) => { });
+            base.OnCreate(bSavedInstanceState);
 
-            AlertDialog dialog = builder.Create();
-            dialog.Show();
+            SetWindowLayout();
+        }
+
+        public override void OnBackPressed()
+        {
+            // Simply close the app without showing a confirmation dialog
+            FinishAffinity();
         }
     }
 }
-
-
-
-
